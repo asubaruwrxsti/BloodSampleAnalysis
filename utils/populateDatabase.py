@@ -1,8 +1,18 @@
 import pandas as pd
+import logging
 from database import Database
 
 # Populate the database with the parameter names
 def populateParameters(db: Database, dataset: str, exclude: list = []):
+    """
+    This function populates the 'parameters' table in the database with parameter names from a dataset.
+
+    Parameters:
+    db (Database): The database to populate.
+    dataset (str): The path to the dataset file.
+    exclude (list, optional): A list of column names to exclude from the dataset. Defaults to an empty list.
+    """
+
     try:
         # Load the data
         data = pd.read_csv(dataset)
@@ -21,11 +31,21 @@ def populateParameters(db: Database, dataset: str, exclude: list = []):
                 insert_query = "INSERT INTO parameters (name) VALUES (?)"
                 db.execute_query(insert_query, (column,))
     
+    except pd.errors.ParserError:
+        logging.error("Failed to parse the dataset.")
     except Exception as e:
-        print(e)
+        logging.error(e)
 
 # Populate the database with the disease names
 def populateDiseaseNames(db: Database, dataset: str):
+    """
+    This function populates the 'diseases' table in the database with disease names from a dataset.
+
+    Parameters:
+    db (Database): The database to populate.
+    dataset (str): The path to the dataset file.
+    """
+
     try:
         # Load the data
         data = pd.read_csv(dataset)
@@ -41,5 +61,11 @@ def populateDiseaseNames(db: Database, dataset: str):
                 insert_query = "INSERT INTO diseases (name) VALUES (?)"
                 db.execute_query(insert_query, (disease,))
     
+    except pd.errors.ParserError:
+        logging.error("Failed to parse the dataset.")
     except Exception as e:
-        print(e)
+        logging.error(e)
+
+def populateDatabase(db, DATA_FILE):
+    populateParameters(db, DATA_FILE, exclude=['Disease'])
+    populateDiseaseNames(db, DATA_FILE)
