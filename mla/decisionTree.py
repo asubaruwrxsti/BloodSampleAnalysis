@@ -15,6 +15,12 @@ class DiseasePredictor:
         Parameters:
         random_state (int): The seed used by the random number generator. Defaults to 42.
         """
+        self.data = None
+        self.labels = None
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
         self.clf = DecisionTreeClassifier(random_state=random_state)
 
     def load_data(self, dataset: str, exclude: List[str] = []):
@@ -39,6 +45,8 @@ class DiseasePredictor:
         self.labels = data['Disease'].astype('category').cat.codes
         self.disease_mapping = dict(enumerate(data['Disease'].astype('category').cat.categories))
         self.data = data.drop('Disease', axis=1)
+
+        self.split_data()
 
     def split_data(self, test_size=0.2):
         """
