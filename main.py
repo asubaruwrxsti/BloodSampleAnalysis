@@ -17,7 +17,9 @@ def main():
         print(f"An error occurred: {e}")
 
 def getSampleData():
-    # Sample data, output Thalasse
+    """
+    Sample data, output Thalasse
+    """
     return BloodSample(
         glucose=0.1767371924855356,
         cholesterol=0.7522199398931788,
