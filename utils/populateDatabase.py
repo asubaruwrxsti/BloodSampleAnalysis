@@ -67,5 +67,8 @@ def populateDiseaseNames(db: Database, dataset: str):
         logging.error(e)
 
 def populateDatabase(db, DATA_FILE):
+    """
+    This function populates the database with parameter names and disease names from a dataset.
+    """
     populateParameters(db, DATA_FILE, exclude=['Disease'])
     populateDiseaseNames(db, DATA_FILE)
